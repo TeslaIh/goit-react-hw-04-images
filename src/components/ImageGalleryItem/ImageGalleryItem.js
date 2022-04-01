@@ -1,37 +1,26 @@
-import React from "react";
-import "./ImageGalleryItem.css";
-import propTypes from "prop-types";
+import { ImageGalleryLi, ImageGallery } from './ImageGalleryItem.jsx';
+import PropTypes from 'prop-types';
 
 const ImageGalleryItem = ({
-  id,
-  showModal,
-  webformaturl,
+  webformatURL,
+  largeImageURL,
   tags,
-  largeimageurl,
-  imgInfo,
+  id,
+  largeImage,
 }) => {
   return (
-    <>
-      <li className="ImageGalleryItem" id={id} onClick={showModal}>
-        <img
-          className="ImageGalleryItem-image"
-          src={webformaturl}
-          alt={tags}
-          largeimageurl={largeimageurl}
-          onClick={imgInfo}
-        />
-      </li>
-    </>
+    <ImageGalleryLi key={id} onClick={() => largeImage(largeImageURL)}>
+      <ImageGallery src={webformatURL} alt={tags} />
+    </ImageGalleryLi>
   );
 };
 
 export default ImageGalleryItem;
 
 ImageGalleryItem.propTypes = {
-  id: propTypes.number,
-  webformaturl: propTypes.string,
-  largeimageurl: propTypes.string,
-  tags: propTypes.string,
-  showModal: propTypes.func,
-  imgInfo: propTypes.func,
+  id: PropTypes.number,
+  webformatURL: PropTypes.string.isRequired,
+  largeImageURL: PropTypes.string.isRequired,
+  tags: PropTypes.string.isRequired,
+  largeImage: PropTypes.func.isRequired,
 };

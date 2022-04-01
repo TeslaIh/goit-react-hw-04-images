@@ -1,4 +1,6 @@
-.Searchbar {
+import styled from 'styled-components';
+
+export const SearchbarHead = styled.header`
   top: 0;
   left: 0;
   position: sticky;
@@ -12,12 +14,12 @@
   padding-top: 12px;
   padding-bottom: 12px;
   color: #fff;
-  background-color: #000763;
+  background-color: #3f51b5;
   box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
     0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
-}
+` 
 
-.SearchForm {
+export const SearchForm = styled.form`
   display: flex;
   align-items: center;
   width: 100%;
@@ -25,28 +27,24 @@
   background-color: #fff;
   border-radius: 3px;
   overflow: hidden;
-}
+`
 
-.SearchForm-button {
+export const SearchFormButton = styled.button`
   display: inline-block;
-  width: 38px;
-  height: 38px;
+  width: 48px;
+  height: 48px;
   border: 0;
-  background-image: url("https://image.flaticon.com/icons/svg/149/149852.svg");
-  background-size: 70%;
+  background-size: 40%;
   background-repeat: no-repeat;
   background-position: center;
   opacity: 0.6;
   transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   outline: none;
-}
-
-.SearchForm-button:hover {
+  &:hover {
   opacity: 1;
 }
-
-.SearchForm-button-label {
+span {
   position: absolute;
   width: 1px;
   height: 1px;
@@ -57,21 +55,19 @@
   clip-path: inset(50%);
   border: 0;
 }
+`
 
-.SearchForm-input {
+export const SearchFormInput = styled.input`
   display: inline-block;
-  max-width: 100%;
-  min-width: 500px;
+  width: 100%;
   font: inherit;
   font-size: 20px;
   border: none;
   outline: none;
-  margin-left: 10px;
   padding-left: 4px;
   padding-right: 4px;
-}
-
-.SearchForm-input::placeholder {
+&:placeholder {
   font: inherit;
-  font-size: 18px;
+  font - size: 18px;
 }
+`

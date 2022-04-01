@@ -1,40 +1,31 @@
-import React from "react";
-import "./ImageGallery.css";
+import {ImageGalleryList} from './ImageGallery.jsx';
 import ImageGalleryItem from "../ImageGalleryItem/ImageGalleryItem";
-import { nanoid } from "nanoid";
-import propTypes from "prop-types";
+import PropTypes from "prop-types";
 
-const ImageGallery = ({ imageData, imgInfo, showModal }) => {
+export const ImageGallery = ({ pictures, onClick }) => {
   return (
-    <>
-      <ul className="ImageGallery">
-        {imageData.map(({ id, webformatURL, tags, largeImageURL }) => (
-          <ImageGalleryItem
-            id={id}
-            key={nanoid()}
-            webformaturl={webformatURL}
-            tags={tags}
-            largeimageurl={largeImageURL}
-            imgInfo={imgInfo}
-            showModal={showModal}
-          ></ImageGalleryItem>
-        ))}
-      </ul>
-    </>
+    <ImageGalleryList>
+      {pictures.map(({ id, webformatURL, largeImageURL, tags }) => (
+        <ImageGalleryItem
+          key={id}
+          webformatURL={webformatURL}
+          largeImageURL={largeImageURL}
+          tags={tags}
+          largeImage={onClick}
+        />
+      ))}
+    </ImageGalleryList>
   );
 };
 
-export default ImageGallery;
-
-ImageGalleryItem.propTypes = {
-  imageData: propTypes.arrayOf(
-    propTypes.shape({
-      id: propTypes.number,
-      webformatURL: propTypes.string,
-      largeImageURL: propTypes.string,
-      tags: propTypes.string,
+ImageGallery.propTypes = {
+  pictures: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      webformatURL: PropTypes.string.isRequired,
+      largeImageURL: PropTypes.string.isRequired,
+      tags: PropTypes.string.isRequired,
     })
   ),
-  showModal: propTypes.func,
-  imgInfo: propTypes.func,
+  onClick: PropTypes.func.isRequired,
 };
