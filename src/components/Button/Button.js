@@ -2,10 +2,10 @@ import React from 'react';
 import { Button, ButtonDiv } from './Button.jsx';
 import PropTypes from 'prop-types';
 
-const LoadMoreBtn = ({ onClick }) => {
+const LoadMoreBtn = ({ more }) => {
   return (
     <ButtonDiv>
-      <Button type="submit" onClick={onClick}>
+      <Button type="submit" onClick={more}>
         {' '}
         Load more
       </Button>
@@ -16,5 +16,5 @@ const LoadMoreBtn = ({ onClick }) => {
 export default LoadMoreBtn;
 
 LoadMoreBtn.propTypes = {
-  onClick: PropTypes.func.isRequired,
+  more: PropTypes.func.isRequired,
 };

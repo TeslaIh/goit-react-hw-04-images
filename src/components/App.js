@@ -4,92 +4,69 @@ import Loader from './Loader/Loader';
 import Searchbar from './Searchbar/Searchbar';
 import { ImageGallery } from './ImageGallery/ImageGallery';
 import Button from './Button/Button';
-import Modal from './Modal/Modal';
+import getAPI from './ApiPixa/ApiPixa';
 import { ToastContainer, toast } from 'react-toastify';
-// import { SRLWrapper } from 'simple-react-lightbox';
+import { SRLWrapper } from 'simple-react-lightbox';
 
 axios.defaults.baseURL = 'https://pixabay.com/api';
 
 export default function App() {
-  const [searchItem, setSearchItem] = useState('');
-  const [items, setItems] = useState([]);
-  const [status, setStatus] = useState('zero');
+  const [imageName, setImageName] = useState('');
+  const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [showModal, setShowModal] = useState(false);
-  const [imageModal, setImageModal] = useState(null);
 
   useEffect(() => {
-    if (searchItem === '') {
+    if (imageName === '') {
       return;
     }
+    setLoading(true);
 
-    async function fetchImages() {
-      setStatus('pending');
-
-      try {
-        const response = await axios.get(
-          `/?q=${searchItem}&page=${page}&key=3705719-850a353db1ffe60c326d386e6&image_type=photo&orientation=horizontal&per_page=12`
-        );
-        const currenItems = response.data.hits.map(
-          ({ id, webformatURL, largeImageURL, tags }) => {
-            return { id, webformatURL, largeImageURL, tags };
-          }
-        );
-        setItems(items => [...items, ...currenItems]);
-        setStatus('resolved');
-
-        if (response.data.hits.length === 0) {
-          toast.error('Wrong request, try again!', { position: 'center' });
+   getAPI(imageName, page).then((res) => {
+      const NewImages = res.data.hits.map(
+        ({ id, tags, webformatURL }) => {
+          return { id, tags, webformatURL };
         }
-      } catch (error) {
-        toast.error('TOTAL EXECUTION!!!', { position: 'center' });
-        setStatus('rejected');
+      );
+
+      if (NewImages.length === 0) {
+        setLoading(false);
+        return toast.error('Wrong request, try again!', { position: 'center' });
       }
-    }
-    fetchImages();
-  }, [searchItem, page]);
+
+      setImages((prevImages) => [...prevImages, ...NewImages]);
+      setLoading(false);
+    })
+  }, [page, imageName]);
 
   const handleFormSubmit = searchQuery => {
-    setSearchItem(searchQuery);
-    setItems([]);
+    setImageName(searchQuery);
+    setImages([]);
     setPage(1);
   };
 
-  const toggleModal = largeImageURL => {
-    setShowModal(showModal => !showModal);
-    setImageModal(largeImageURL);
-
-    //   toggleModal = (e) => {
-    //   this.setState(({ showModal }) => ({
-    //     showModal: false,
-  };
+  const moreBtn = () => {
+    setPage((page) => page + 1)
+  }
 
   return (
     <>
       <Searchbar onSubmit={handleFormSubmit} />
-      
-      {items.length > 0 && (
-        
-          <ImageGallery pictures={items} onClick={toggleModal}> 
-          </ImageGallery>
-        
-      )}
-      {status === 'pending' && <Loader />}
-      {(items.length === 12 || items.length > 12) && (
-        <Button onClick={() => setPage(page => page + 1)} />
-      )}
+      <SRLWrapper>
+        <ImageGallery images={images} />
+      </SRLWrapper>
 
-      {showModal && (
-        <Modal onClose={toggleModal}>
-          <img src={imageModal} alt="" />
-        </Modal>
-        
+      {loading ? (
+        <Loader />
+      ) : (
+        images.length > 0 &&
+        images.length % 12 === 0 && <Button more={moreBtn} />
       )}
 
       <ToastContainer
         autoClose={1500}
         theme="colored"
-        position="top-right"
+        position="center"
         icon="🚀"
       />
     </>
